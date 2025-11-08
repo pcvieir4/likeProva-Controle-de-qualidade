@@ -25,7 +25,6 @@
 <p id="div_relatorio" style="white-space:pre-line;"></p>
 <p id="div_projecao" style="white-space:pre-line;"></p>
 
-
 <script>
 function analisar(){
     var nome = ipt_nome.value.trim();
@@ -38,8 +37,7 @@ function analisar(){
     div_relatorio.innerHTML = "";
     div_projecao.innerHTML = "";
 
-
-    if(nome == "" || total < 5 || defeitos < 0 || defeitos > total || farinha <= 0 || tempo <= 15){
+    if(nome == "" || total < 5 || defeitos < 0 || defeitos > total || farinha <= 0 || tempo < 15){
         div_msg.innerHTML =
         "Erro de preenchimento! Verifique as informações e confirme:<br>" +
         "O nome do bolo deve estar preenchido.<br>" +
@@ -50,49 +48,47 @@ function analisar(){
         return;
     }
 
-    
     var validos = total - defeitos;
     var eficiencia = validos / total * 100;
     var mediaFarinha = farinha / total;
     var desperdicio = mediaFarinha * defeitos;
     var tempoMedio = tempo / total;
 
-   
-    var rel = "";
-    rel += "<b>ANÁLISE DA PRODUÇÃO:</b><br><br>";
-    rel += "Bolo: " + nome + "<br>";
-    rel += "Produzidos: " + total + " | Defeituosos: " + defeitos + "<br>";
-    rel += "Bolos Válidos: " + validos + " | Eficiência: " + eficiencia.toFixed(1) + "%<br>";
-    rel += "Farinha Total: " + farinha + " kg | Média de Farinha por Bolo: " + mediaFarinha.toFixed(2) + " kg<br>";
-    rel += "Total de Farinha Desperdiçada: " + desperdicio.toFixed(2) + " kg<br>";
-    rel += "Tempo Total: " + tempo + " min | Tempo Médio por Bolo: " + tempoMedio.toFixed(1) + " min<br><br>";
+    var relatorioTexto = "";
+    relatorioTexto += "<b>ANÁLISE DA PRODUÇÃO:</b><br><br>";
+    relatorioTexto += "Bolo: " + nome + "<br>";
+    relatorioTexto += "Produzidos: " + total + " | Defeituosos: " + defeitos + "<br>";
+    relatorioTexto += "Bolos Válidos: " + validos + " | Eficiência: " + eficiencia.toFixed(1) + "%<br>";
+    relatorioTexto += "Farinha Total: " + farinha + " kg | Média de Farinha por Bolo: " + mediaFarinha.toFixed(2) + " kg<br>";
+    relatorioTexto += "Total de Farinha Desperdiçada: " + desperdicio.toFixed(2) + " kg<br>";
+    relatorioTexto += "Tempo Total: " + tempo + " min | Tempo Médio por Bolo: " + tempoMedio.toFixed(1) + " min<br><br>";
 
-    div_relatorio.innerHTML = rel;
+    div_relatorio.innerHTML = relatorioTexto;
 
-    
-    var analise = "";
+    var analiseTexto = "";
     if (eficiencia < 75){
-        analise = "Produção abaixo do ideal – necessário revisar o processo de preparo.";
-    } else if (eficiencia <= 90){
-        analise = "Produção boa - rendimento dentro do esperado.";
-    } else {
-        analise = "Produção excelente – ótimo desempenho da equipe.";
+        analiseTexto = "Produção abaixo do ideal – necessário revisar o processo de preparo.";
+    } 
+    else if (eficiencia <= 90){
+        analiseTexto = "Produção boa - rendimento dentro do esperado.";
+    } 
+    else {
+        analiseTexto = "Produção excelente – ótimo desempenho da equipe.";
 
         if(mediaFarinha < 0.8 && tempoMedio < 20){
-            analise += "<br>Processo otimizado – excelente aproveitamento de tempo e ingredientes.";
+            analiseTexto += "<br>Processo otimizado – excelente aproveitamento de tempo e ingredientes.";
         }
     }
 
-    div_msg.innerHTML = analise + "<br><br>";
+    div_msg.innerHTML = analiseTexto + "<br><br>";
 
-    
     var dias = Number(prompt("Quantos dias deseja projetar a eficiência?"));
     while (dias <= 0){
         alert("Projeção inválida! A quantidade de dias deve ser maior que 0!");
         dias = Number(prompt("Quantos dias deseja projetar a eficiência?"));
     }
 
-    var textoProj = "<b>PROJEÇÃO DE EFICIÊNCIA: " + dias + " dias</b><br><br>";
+    var projecaoTexto = "<b>PROJEÇÃO DE EFICIÊNCIA: " + dias + " dias</b><br><br>";
     var eficienciaAtual = eficiencia;
 
     for (var d = 1; d <= dias; d++){
@@ -106,13 +102,10 @@ function analisar(){
             eficienciaAtual = 100;
         }
 
-        
-        textoProj +=
-            "Dia " + d + " - Eficiência estimada: " +
-            eficienciaAtual.toFixed(1) + "%<br>";
+        projecaoTexto += "Dia " + d + " - Eficiência estimada: " + eficienciaAtual.toFixed(1) + "%<br>";
     }
 
-    div_projecao.innerHTML = textoProj;
+    div_projecao.innerHTML = projecaoTexto;
 }
 </script>
 
